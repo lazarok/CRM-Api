@@ -4,6 +4,8 @@ using CRM.Application.Features.Products.Commands.CreateProduct;
 using CRM.Application.Features.Products.Commands.DeleteProduct;
 using CRM.Application.Features.Products.Commands.UpdateProduct;
 using CRM.Application.Features.Products.DTOs;
+using CRM.Application.Features.Products.Queries.GetAllProduct;
+using CRM.Application.Features.Products.Queries.GetProductDetails;
 using CRM.Application.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -19,6 +21,30 @@ public class ProductController : BaseApiController
     public ProductController(IMapper mapper)
     {
         _mapper = mapper;
+    }
+
+    /// <summary>
+    /// Get product
+    /// </summary>
+    /// <param name="productId"></param>
+    /// <returns></returns>
+    [ProducesResponseType(typeof(ApiResponse<ProductDto>), StatusCodes.Status200OK)]
+    [HttpGet("{productId}")]
+    public async Task<IActionResult> Get(long productId)
+    {
+        return BuildResponse(await Mediator.Send(new GetProductDetailsQuery(productId)));
+    }
+    
+    /// <summary>
+    /// Get all products
+    /// </summary>
+    /// <param name="query"></param>
+    /// <returns></returns>
+    [ProducesResponseType(typeof(ApiResponse<PagedList<ProductDto>>), StatusCodes.Status200OK)]
+    [HttpGet]
+    public async Task<IActionResult> Get([FromQuery] GetAllProductQuery query)
+    {
+        return BuildResponse(await Mediator.Send(query));
     }
 
     /// <summary>
@@ -47,12 +73,11 @@ public class ProductController : BaseApiController
         command.Id = productId;
         return BuildResponse(await Mediator.Send(command));
     }
-    
+
     /// <summary>
     /// Delete product
     /// </summary>
     /// <param name="productId"></param>
-    /// <param name="request"></param>
     /// <returns></returns>
     [ProducesResponseType(typeof(ApiResponse<ProductDto>), StatusCodes.Status200OK)]
     [HttpDelete("{productId}")]

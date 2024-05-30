@@ -11,7 +11,7 @@ public class RegisterController : BaseApiController
 {
 
     /// <summary>
-    /// Register admin
+    /// Register new Organization and the user is created as owner
     /// </summary>
     /// <param name="request"></param>
     /// <returns></returns>
@@ -24,7 +24,7 @@ public class RegisterController : BaseApiController
     }
     
     /// <summary>
-    /// Register user
+    /// Register user to an existing organization
     /// </summary>
     /// <param name="request"></param>
     /// <returns></returns>
