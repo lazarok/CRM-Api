@@ -1,6 +1,6 @@
 using FluentValidation;
 
-namespace CRM.Application.Fetures.Auth.RegisterAdmin;
+namespace CRM.Application.Features.Register.Commands.RegisterAdmin;
 
 public class RegisterAdminCommandValidator : AbstractValidator<RegisterAdminCommand>
 {
@@ -20,7 +20,7 @@ public class RegisterAdminCommandValidator : AbstractValidator<RegisterAdminComm
             .MinimumLength(4)
             .MaximumLength(16);
         
-        RuleFor(x => x.Name)
+        RuleFor(x => x.OrganizationName)
             .NotEmpty()
             .MaximumLength(50);
     }

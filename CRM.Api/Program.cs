@@ -3,9 +3,11 @@ using System.Reflection;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using CRM.Api.Middlewares;
 using CRM.Application;
 using CRM.Application.Exceptions;
 using CRM.Application.Models;
+using CRM.Application.Services;
 using CRM.Infrastructure.Persistence;
 using CRM.Infrastructure.Shared;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -14,6 +16,8 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddScoped<IWorkContext, WorkContext>();
 
 // Add services to the container.
 builder.Services.AddPersistence(builder.Configuration);
@@ -41,55 +45,15 @@ builder.Services.AddAuthentication(options =>
     })
     .AddJwtBearer(o =>
     {
-        o.RequireHttpsMetadata = false;
-        o.SaveToken = false;
         o.TokenValidationParameters = new TokenValidationParameters
         {
             ValidateIssuerSigningKey = true,
             ValidateIssuer = true,
             ValidateAudience = true,
             ValidateLifetime = true,
-            ClockSkew = TimeSpan.Zero,
             ValidIssuer = builder.Configuration["Jwt:Issuer"],
             ValidAudience = builder.Configuration["Jwt:Audience"],
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
-        };
-
-        var jsonSerializerOptions = new JsonSerializerOptions
-        {
-            DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
-            DictionaryKeyPolicy = null,
-            PropertyNamingPolicy = null
-        };
-
-        o.Events = new JwtBearerEvents()
-        {
-            OnAuthenticationFailed = context =>
-            {
-                context.NoResult();
-                context.Response.StatusCode = 401;
-                context.Response.ContentType = "application/json";
-
-                var response = ApiResponse.Error(context.Exception.ToString());
-                return context.Response.WriteAsJsonAsync(response, jsonSerializerOptions);
-            },
-            OnChallenge = context =>
-            {
-                context.HandleResponse();
-                context.Response.StatusCode = 401;
-                context.Response.ContentType = "application/json";
-
-                var response = ApiResponse.Error(ResponseCode.Unauthorized, "You are not Authorized");
-                return context.Response.WriteAsJsonAsync(response, jsonSerializerOptions);
-            },
-            OnForbidden = context =>
-            {
-                context.Response.StatusCode = 403;
-                context.Response.ContentType = "application/json";
-
-                var response = ApiResponse.Error(ResponseCode.Forbidden, "You are not authorized to access this resource");
-                return context.Response.WriteAsJsonAsync(response, jsonSerializerOptions);
-            },
         };
     });
 
@@ -149,10 +113,14 @@ builder.Services.AddSwaggerGen(options =>
 
 var app = builder.Build();
 
+app.UseMiddleware<UserIdentityMiddleware>();
+
 app.UseCors();
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.UseMiddleware<TenantMiddleware>();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

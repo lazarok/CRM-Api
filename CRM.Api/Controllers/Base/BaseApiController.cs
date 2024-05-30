@@ -13,14 +13,23 @@ public abstract class BaseApiController : ControllerBase
     
     protected ObjectResult BuildResponse(ApiResponse response)
     {
-        if (response.Code == ResponseCode.NotFound)
+        // 2xx
+        
+        if (response.Success)
         {
-            return StatusCode((int)HttpStatusCode.NotFound, response);
+            return StatusCode((int)HttpStatusCode.OK, response);
         }
         
         if (response.Code == ResponseCode.Created)
         {
             return StatusCode((int)HttpStatusCode.Created, response);
+        }
+        
+        // Bad
+        
+        if (response.Code == ResponseCode.NotFound)
+        {
+            return StatusCode((int)HttpStatusCode.NotFound, response);
         }
         
         if (response.Code == ResponseCode.Unhandled)

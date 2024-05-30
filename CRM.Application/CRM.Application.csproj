@@ -23,7 +23,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Fetures\Organizations\" />
+      <Folder Include="Features\Register\Commands\" />
     </ItemGroup>
 
 </Project>

@@ -30,7 +30,7 @@ public class CrmContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        var desiredNamespace = nameof(Configurations.Auth);
+        var desiredNamespace = nameof(Configurations.Crm);
         var configurationTypes = typeof(CrmContext).Assembly.GetTypes()
             .Where(t => 
                 t.Namespace != null && t.Namespace.StartsWith(desiredNamespace) 

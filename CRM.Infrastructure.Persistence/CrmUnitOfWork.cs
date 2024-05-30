@@ -3,7 +3,6 @@ using CRM.Application.Repositories.Common;
 using CRM.Domain.Common;
 using CRM.Infrastructure.Persistence.Common;
 using CRM.Infrastructure.Persistence.Context.Crm;
-using CRM.Infrastructure.Persistence.Repositories;
 using Microsoft.EntityFrameworkCore.Storage;
 
 namespace CRM.Infrastructure.Persistence;

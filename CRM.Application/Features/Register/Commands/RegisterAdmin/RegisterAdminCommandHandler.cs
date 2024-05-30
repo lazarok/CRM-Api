@@ -7,7 +7,7 @@ using CRM.Domain.Entities;
 using CRM.Domain.Enums;
 using MediatR;
 
-namespace CRM.Application.Fetures.Auth.RegisterAdmin;
+namespace CRM.Application.Features.Register.Commands.RegisterAdmin;
 
 public class RegisterAdminCommandHandler : IRequestHandler<RegisterAdminCommand, ApiResponse>
 {

@@ -1,7 +1,7 @@
 using CRM.Application.Models;
 using MediatR;
 
-namespace CRM.Application.Fetures.Auth.RegisterAdmin;
+namespace CRM.Application.Features.Register.Commands.RegisterAdmin;
 
 public class RegisterAdminCommand : IRequest<ApiResponse>
 {

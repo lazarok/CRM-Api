@@ -12,4 +12,5 @@ public static class ResponseCode
     public static string NotFound { get; } = nameof(NotFound);
     public static string Found { get; } = nameof(Found);
     public static string Created { get; } = nameof(Created);
+    public static string BadRequest { get; } = nameof(BadRequest);
 }

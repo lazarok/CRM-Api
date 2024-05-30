@@ -35,7 +35,7 @@ public class CrmContextFactory : IDesignTimeDbContextFactory<CrmContext>
         
         var context = new CrmContext(optionsBuilder.Options);
         
-        context.Database.EnsureCreated();
+        //context.Database.EnsureCreated();
         
         return context;
     }
