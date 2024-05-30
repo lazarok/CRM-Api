@@ -47,6 +47,6 @@ public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, A
 
         await _authUnitOfWork.SaveChangesAsync(cancellationToken);
 
-        return ApiResponse.Ok(ResponseCode.Created);
+        return ApiResponse.Ok(ResponseCode.Created, message: "");
     }
 }

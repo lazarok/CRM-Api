@@ -15,7 +15,6 @@ public class RegisterController : BaseApiController
     /// </summary>
     /// <param name="request"></param>
     /// <returns></returns>
-    [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status201Created)]
     [HttpPost("admin")]
@@ -29,7 +28,6 @@ public class RegisterController : BaseApiController
     /// </summary>
     /// <param name="request"></param>
     /// <returns></returns>
-    [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status201Created)]
     [HttpPost("user")]

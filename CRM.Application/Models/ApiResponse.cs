@@ -43,6 +43,17 @@ public class ApiResponse
         return Ok(MappingHelper.Map<T>(source));
     }
     
+    public static ApiResponse<T> OkMapped<T>(object source, string code)
+    {
+        return new ApiResponse<T>()
+        {
+            Success = true,
+            Code = code,
+            Message = null,
+            Data = MappingHelper.Map<T>(source)
+        };
+    }
+    
     public static ApiResponse<T> Ok<T>(T data)
     {
         return Ok(data, ResponseCode.Ok, null);

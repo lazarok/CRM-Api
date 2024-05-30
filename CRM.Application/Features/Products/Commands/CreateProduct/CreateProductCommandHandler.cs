@@ -40,6 +40,6 @@ public class CreateProductCommandHandler : IRequestHandler<CreateProductCommand,
 
         await _crmUnitOfWork.SaveAsync(cancellationToken);
 
-        return ApiResponse.OkMapped<ProductDto>(product);
+        return ApiResponse.OkMapped<ProductDto>(product, ResponseCode.Created);
     }
 }
