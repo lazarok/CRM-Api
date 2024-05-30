@@ -1,5 +1,4 @@
 using System.Net;
-using CRM.Application.Models;
 using FluentValidation.Results;
 
 namespace CRM.Application.Exceptions;

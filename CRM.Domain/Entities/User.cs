@@ -10,7 +10,6 @@ public class User : BaseEntity
     public required string Name { get; set; }
     public required UserRole Role { get; set; }
     public string? PasswordHash { get; set; }
-    public string? PasswordSalt { get; set; }
     public string? RefreshToken { get; set; }
     public DateTime? RefreshTokenExpires { get; set; }
 

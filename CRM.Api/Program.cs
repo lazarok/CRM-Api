@@ -6,10 +6,10 @@ using System.Text.Json.Serialization;
 using CRM.Application;
 using CRM.Application.Exceptions;
 using CRM.Application.Models;
-using CRM.Persistence;
+using CRM.Infrastructure.Persistence;
+using CRM.Infrastructure.Shared;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Diagnostics;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
@@ -17,17 +17,18 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddPersistence(builder.Configuration);
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddSharedInfrastructure(builder.Configuration);
 builder.Services.AddApplication(builder.Configuration);
 
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(configurePolicy =>
     {
-        configurePolicy.AllowAnyOrigin()
-            .SetIsOriginAllowedToAllowWildcardSubdomains()
+        configurePolicy
+            .AllowAnyOrigin()
             .AllowAnyHeader()
-            .AllowAnyMethod()
-            .AllowCredentials();
+            .AllowAnyMethod();
     });
 });
 
@@ -146,8 +147,6 @@ builder.Services.AddSwaggerGen(options =>
     });
 });
 
-builder.Services.AddApiVersioningExtension();
-
 var app = builder.Build();
 
 app.UseCors();
@@ -161,7 +160,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI(c =>
     {
-        c.SwaggerEndpoint("/swagger/v1/swagger.json", " Api");
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", " Api CRM");
     });
 }
 
@@ -192,7 +191,10 @@ public static class Extensions
                 if (error is CustomException ce)
                 {
                     context.Response.StatusCode = (int) ce.StatusCode;
-                    responseModel = ApiResponse.Error(ce.ResponseCode, ce.Message);
+
+                    var message = ce.Message + ". " + string.Join(". ", ce.ErrorMessages ?? []);
+                    
+                    responseModel = ApiResponse.Error(ce.ResponseCode, message);
                 }
                 else
                 {
@@ -230,20 +232,5 @@ public static class Extensions
                 await context.Response.WriteAsJsonAsync(responseModel, jsonSerializerOptions);
             });
         });
-    }
-    
-    public static IServiceCollection AddApiVersioningExtension(this IServiceCollection services)
-    {
-        services.AddApiVersioning(config =>
-        {
-            // Specify the default API Version as 1.0
-            config.DefaultApiVersion = new ApiVersion(1, 0);
-            // If the client hasn't specified the API version in the request, use the default API version number 
-            config.AssumeDefaultVersionWhenUnspecified = true;
-            // Advertise the API versions supported for the particular endpoint
-            config.ReportApiVersions = true;
-        });
-
-        return services;
     }
 }

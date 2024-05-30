@@ -18,11 +18,6 @@ public abstract class BaseApiController : ControllerBase
             return StatusCode((int)HttpStatusCode.NotFound, response);
         }
         
-        if (response.Code == ResponseCode.Found)
-        {
-            return StatusCode((int)HttpStatusCode.Found, response);
-        }
-        
         if (response.Code == ResponseCode.Created)
         {
             return StatusCode((int)HttpStatusCode.Created, response);

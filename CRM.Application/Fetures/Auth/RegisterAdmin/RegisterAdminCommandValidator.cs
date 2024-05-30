@@ -17,6 +17,11 @@ public class RegisterAdminCommandValidator : AbstractValidator<RegisterAdminComm
         
         RuleFor(x => x.Password)
             .NotEmpty()
+            .MinimumLength(4)
             .MaximumLength(16);
+        
+        RuleFor(x => x.Name)
+            .NotEmpty()
+            .MaximumLength(50);
     }
 }
