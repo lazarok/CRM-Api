@@ -15,6 +15,6 @@ public class ProductConfiguration : IEntityTypeConfiguration<Product>
         builder.Property(x => x.Price).HasColumnType("decimal(10,2)");
         builder.Property(x => x.CreatedBy);
         
-        builder.HasIndex(x => x.Name).IsUnique();
+        builder.HasIndex(x => x.Name).IsUnique().HasDatabaseName("Product_Name");
     }
 }

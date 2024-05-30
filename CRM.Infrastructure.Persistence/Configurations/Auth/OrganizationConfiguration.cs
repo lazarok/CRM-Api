@@ -12,7 +12,8 @@ public class OrganizationConfiguration : IEntityTypeConfiguration<Organization>
         builder.Property(x => x.Name).HasMaxLength(100);
         builder.Property(x => x.SlugTenant).HasMaxLength(256);
         
-        builder.HasIndex(x => x.Name).IsUnique();
+        builder.HasIndex(x => x.Name).IsUnique().HasDatabaseName("Organization_Name");;
+        builder.HasIndex(x => x.SlugTenant).IsUnique().HasDatabaseName("Organization_SlugTenant");;
 
         builder.HasMany(s => s.Users)
             .WithOne(p => p.Organization)

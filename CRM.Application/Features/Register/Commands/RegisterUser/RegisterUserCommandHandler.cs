@@ -27,8 +27,9 @@ public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, A
             return ApiResponse.Error(ResponseCode.Found, "Exist user");
 
         var organizationRepository = _authUnitOfWork.Repository<Organization>();
-        
-        if (!await organizationRepository.AnyAsync(x => x.Id == request.OrganizationId, cancellationToken))
+
+        var organization = await organizationRepository.FirstOrDefaultAsync(x => x.SlugTenant == request.SlugTenant, cancellationToken: cancellationToken);
+        if (organization is null)
             return ApiResponse.Error(ResponseCode.NotFound, "Organization not found");
         
         var newUser = new User
@@ -36,7 +37,7 @@ public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, A
             Email = email,
             Name = request.Name.Trim(),
             Role = UserRole.Employed,
-            OrganizationId = request.OrganizationId,
+            OrganizationId = organization.Id,
             PasswordHash = PasswordHelper.CreatePasswordHash(request.Password),
             RefreshToken = null,
             RefreshTokenExpires = null

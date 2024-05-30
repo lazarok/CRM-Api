@@ -15,7 +15,7 @@ public class UserConfiguration: IEntityTypeConfiguration<User>
         builder.Property(x => x.RefreshToken).HasMaxLength(256);
         builder.Property(x => x.RefreshTokenExpires).HasColumnType("datetime");
         
-        builder.HasIndex(x => x.Email).IsUnique();
+        builder.HasIndex(x => x.Email).IsUnique().HasDatabaseName("User_Email");
 
         builder.Property(x => x.Email)
             .HasConversion(e => e.ToLower(), e => e);
