@@ -1,6 +1,7 @@
 using AutoMapper;
 using CRM.Api.Controllers.Base;
 using CRM.Application.Features.Products.Commands.CreateProduct;
+using CRM.Application.Features.Products.Commands.DeleteProduct;
 using CRM.Application.Features.Products.Commands.UpdateProduct;
 using CRM.Application.Features.Products.DTOs;
 using CRM.Application.Models;
@@ -45,5 +46,18 @@ public class ProductController : BaseApiController
         var command = _mapper.Map<UpdateProductCommand>(request);
         command.Id = productId;
         return BuildResponse(await Mediator.Send(command));
+    }
+    
+    /// <summary>
+    /// Delete product
+    /// </summary>
+    /// <param name="productId"></param>
+    /// <param name="request"></param>
+    /// <returns></returns>
+    [ProducesResponseType(typeof(ApiResponse<ProductDto>), StatusCodes.Status200OK)]
+    [HttpDelete("{productId}")]
+    public async Task<IActionResult> DeleteProduct(long productId)
+    {
+        return BuildResponse(await Mediator.Send(new DeleteProductCommand(productId)));
     }
 }
