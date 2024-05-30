@@ -11,6 +11,7 @@ public class CrmContext : DbContext
     public CrmContext(DbContextOptions<CrmContext> options)
         : base(options)
     {
+        ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
     }
     
     public Task<IDbContextTransaction> BeginTransactionAsync(CancellationToken cancellationToken = default)

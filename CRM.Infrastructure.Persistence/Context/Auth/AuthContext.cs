@@ -12,6 +12,7 @@ public class AuthContext : DbContext
     public AuthContext(DbContextOptions<AuthContext> options)
         : base(options)
     {
+        ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
     }
     
     public Task<IDbContextTransaction> BeginTransactionAsync(CancellationToken cancellationToken = default)

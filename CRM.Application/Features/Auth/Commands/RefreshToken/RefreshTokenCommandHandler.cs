@@ -64,6 +64,7 @@ public class RefreshTokenCommandHandler : IRequestHandler<RefreshTokenCommand, A
         };
 
         var token = _tokenService.BuildToken(claims)!;
+        token.SlugTenant = user.Organization.SlugTenant;
         
         user.RefreshToken = token.RefreshToken;
         user.RefreshTokenExpires = DateTime.UtcNow.AddMonths(int.Parse(_configuration["Jwt:RefreshTokenExpires"]!));
