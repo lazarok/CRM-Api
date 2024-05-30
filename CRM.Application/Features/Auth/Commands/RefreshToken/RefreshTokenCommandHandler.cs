@@ -59,7 +59,8 @@ public class RefreshTokenCommandHandler : IRequestHandler<RefreshTokenCommand, A
             new Claim(ClaimTypes.Email, user.Email),
             new Claim(ClaimTypes.Name, user.Name),
             new Claim(ClaimTypes.Role, user.Role.ToString()),
-            new Claim("Tenant", user.Organization.SlugTenant)
+            new Claim("Tenant", user.Organization.SlugTenant),
+            new Claim("OrganizationId", user.OrganizationId.ToString())
         };
 
         var token = _tokenService.BuildToken(claims)!;

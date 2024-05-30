@@ -4,6 +4,7 @@ namespace CRM.Api.Middlewares;
 
 public class WorkContext : IWorkContext
 {
-    public string? UserId { get; set; }
+    public long? UserId { get; set; }
     public string? SlugTenant { get; set;}
+    public long? OrganizationId { get; set; }
 }

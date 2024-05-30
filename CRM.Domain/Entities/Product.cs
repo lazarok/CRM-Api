@@ -8,5 +8,9 @@ public class Product : BaseEntity
     public string? Description { get; set; }
     public int ProductStock { get; set; }
     public decimal Price { get; set; }
-
+    
+    /// <summary>
+    /// UserId
+    /// </summary>
+    public required long CreatedBy { get; set; }
 }

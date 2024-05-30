@@ -22,12 +22,12 @@ public class OrganizationBuilderRepository : IOrganizationBuilderRepository
         var configuration = builder.Build();
 
         configuration = builder.Build();
-
-        // Get connection string
+        
         var optionsBuilder = new DbContextOptionsBuilder<CrmContext>();
         
         var connectionString = configuration.GetConnectionString("Crm")!;
 
+        // Get connection string
         connectionString = string.Format(connectionString, slugTenant);
         
         optionsBuilder.UseSqlServer(connectionString, b => b.MigrationsAssembly(typeof(CrmContext).Assembly.FullName));

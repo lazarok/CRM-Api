@@ -1,16 +1,15 @@
 using System.Linq.Expressions;
 using CRM.Application.Repositories.Common;
 using CRM.Domain.Common;
-using CRM.Infrastructure.Persistence.Context.Auth;
 using Microsoft.EntityFrameworkCore;
 
 namespace CRM.Infrastructure.Persistence.Common;
 
 public class BaseRepository<TEntity> : IRepository<TEntity> where TEntity : BaseEntity
 {
-    private readonly AuthContext _context;
+    private readonly DbContext _context;
 
-    public BaseRepository(AuthContext context)
+    public BaseRepository(DbContext context)
     {
         _context = context;
     }
