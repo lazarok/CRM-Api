@@ -1,0 +1,43 @@
+using System.Net;
+using CRM.Application.Models;
+using MediatR;
+using Microsoft.AspNetCore.Mvc;
+
+namespace CRM.Api.Controllers.Base;
+
+[ApiController]
+public abstract class BaseApiController : ControllerBase
+{
+    private IMediator _mediator;
+    protected IMediator Mediator => _mediator ??= HttpContext.RequestServices.GetService<IMediator>()!;
+    
+    protected ObjectResult BuildResponse(ApiResponse response)
+    {
+        if (response.Code == ResponseCode.NotFound)
+        {
+            return StatusCode((int)HttpStatusCode.NotFound, response);
+        }
+        
+        if (response.Code == ResponseCode.Found)
+        {
+            return StatusCode((int)HttpStatusCode.Found, response);
+        }
+        
+        if (response.Code == ResponseCode.Created)
+        {
+            return StatusCode((int)HttpStatusCode.Created, response);
+        }
+        
+        if (response.Code == ResponseCode.Unhandled)
+        {
+            return StatusCode((int)HttpStatusCode.Unauthorized, response);
+        }
+        
+        if (response.Code == ResponseCode.Forbidden)
+        {
+            return StatusCode((int)HttpStatusCode.Forbidden, response);
+        }
+        
+        return StatusCode((int)HttpStatusCode.BadRequest, response);
+    }
+}
